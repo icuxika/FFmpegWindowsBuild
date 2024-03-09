@@ -85,3 +85,22 @@ cd .\VSYASM\
 `严重性	代码	说明	项目	文件	行	禁止显示状态
 错误	C1083	无法打开包括文件: “gcrypt.h”: No such file or directory	libavutil	C:\Users\icuxika\VSCodeProjects\FFmpegWindowsBuild\source\FFmpeg\libavutil\random_seed.c	34	
 `
+
+
+### 使用[FFVS-Project-Generator](https://github.com/ShiftMediaProject/FFVS-Project-Generator)定制FFmpeg
+
+> 先将`ffmpeg_deps.sln`完整构建一次，下面的配置命令以尽可能少地的库数量要求支持硬件解码h264
+
+```
+cd .\source\
+
+project_generate.exe --enable-gpl --enable-version3 --enable-nonfree --disable-everything --enable-libx264 --enable-hwaccel=h264_nvdec --enable-muxer=mp4 --
+enable-demuxer=mov --enable-parser=h264 --enable-libfdk-aac --enable-decoder=aac --enable-protocol=file --enable-filter=scale --enable-filter=crop --enable-cu
+da --enable-cuvid --enable-ffnvcodec --enable-nvdec
+```
+
+其中一些库由于但是由于协议问题，没有包含在在`ffmpeg_deps.sln`中，需要手动去[https://shiftmediaproject.github.io/1-projects/](https://shiftmediaproject.github.io/1-projects/)查看或GitHub仓库找到地址克隆到`source`目录下，然后打开项目文件夹下的`sln`文件，如`source\fdk-aac\SMP\libfdk-aac.sln`，构建后会自动安装到`msvc`目录中，不需要手动复制
+```
+cd .\source\
+git clone https://github.com/ShiftMediaProject/fdk-aac.git
+```
